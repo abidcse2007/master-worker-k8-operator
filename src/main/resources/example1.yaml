@@ -1,0 +1,15 @@
+apiVersion: "com.abid.crd.job/v1"
+kind: "MWJob"
+metadata:
+  name: "example1"
+spec:
+  masterTemplate:
+    metadata:
+      name: "master"
+      annotations:
+    spec:
+  workerTemplate:
+    metadata:
+      name: "worker"
+      annotations:
+    spec:

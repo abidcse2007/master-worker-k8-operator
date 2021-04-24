@@ -1,0 +1,27 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.5'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id "io.freefair.lombok" version "5.3.3.3"
+}
+
+group = 'com.abid.k8'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	implementation group: 'io.kubernetes', name: 'client-java', version: '12.0.0'
+	implementation group: 'io.kubernetes', name: 'client-java-extended', version: '12.0.0'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
