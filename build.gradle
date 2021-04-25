@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id "io.freefair.lombok" version "5.3.3.3"
+	id "org.openapi.generator" version "5.1.0"
 }
 
 group = 'com.abid.k8'
@@ -25,3 +26,4 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
