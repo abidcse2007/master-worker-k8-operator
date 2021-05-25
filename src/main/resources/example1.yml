@@ -6,10 +6,8 @@ spec:
   masterTemplate:
     metadata:
       name: "master"
-      annotations:
     spec:
   workerTemplate:
     metadata:
       name: "worker"
-      annotations:
     spec:
