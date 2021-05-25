@@ -1,0 +1,128 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: mwjobs.com.abid.crd.job
+spec:
+  preserveUnknownFields: false
+  group: com.abid.crd.job
+  versions:
+    - name: v1
+      served: true
+      storage: true
+  scope: Namespaced
+  names:
+    plural: mwjobs
+    singular: mwjob
+    kind: MWJob
+    shortNames:
+      - mw
+      - mws
+  validation:
+    openAPIV3Schema:
+      type: object
+      properties:
+        spec:
+          type: object
+          properties:
+            masterTemplate:
+              type: object
+              properties:
+                spec:
+                  type: object
+            workerTemplate:
+              type: object
+              properties:
+                spec:
+                  type: object
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: crd-poc-config
+  labels:
+    ad-app: crd-poc
+data:
+  application.yaml: |-
+
+---
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crd-poc-service
+  labels:
+    ad-app: crd-poc
+spec:
+  ports:
+    - name: http-port
+      port: 80
+      targetPort: http
+  selector:
+    ad-app: crd-poc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crd-poc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  crd-poc
+  template:
+    metadata:
+      labels:
+        app:  crd-poc
+    spec:
+      containers:
+        - name: crd-poc
+          image:  talk2abid/crd-poc:1.0.0
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 750m
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - name: spring-boot-config
+              mountPath: /spring
+          env:
+            - name: JAVA_OPTS
+              value: -XX:MaxRAMPercentage=50.0
+            - name: KUBECLIENT_CONNECTTIMEOUTSECONDS
+              value: "2"
+            - name: KUBECLIENT_READTIMEOUTSECONDS
+              value: "2"
+            - name: KUBECLIENT_WRITETIMEOUTSECONDS
+              value: "2"
+            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+              value: "file:///spring/"
+          ports:
+            - containerPort: 8080
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            timeoutSeconds: 5
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: spring-boot-config
+          configMap:
+            name: crd-poc-config
+---

@@ -121,7 +121,8 @@ public class DefaultRunner implements ApplicationRunner {
         leaderElectingController = new LeaderElectingController(
                 new LeaderElector(
                         new LeaderElectionConfig(new EndpointsLock(namespace, "leader-election", "mwJob"),
-                                Duration.ofMillis(60000), Duration.ofMillis(8000), Duration.ofMillis(5000))), controllerManager);
+                                Duration.ofMillis(60000), Duration.ofMillis(8000), Duration.ofMillis(5000))
+                ), controllerManager);
         leaderElectingController.run();
     }
 }
