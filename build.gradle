@@ -16,6 +16,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	implementation group: 'io.kubernetes', name: 'client-java', version: '12.0.0'
 	implementation group: 'io.kubernetes', name: 'client-java-extended', version: '12.0.0'
